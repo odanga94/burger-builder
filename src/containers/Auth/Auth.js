@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 import actionCreators from '../../store/actions/auth';
 import Input from '../../components/UI/Input/Input';
@@ -42,6 +43,12 @@ class Auth extends Component {
             },
         },
         isSignUp: true
+    }
+
+    componentDidMount(){
+        if (!this.props.buildingBurger && this.props.authRedirectPath !== '/'){
+            this.props.onSetAuthRedirectPath()
+        }
     }
 
     checkValidity(value, rules) {
@@ -130,8 +137,14 @@ class Auth extends Component {
             )
         }
 
+        let authRedirect = null;
+        if (this.props.isAuthenticated){
+            authRedirect = <Redirect to={this.props.authRedirectPath}/>
+        }
+
         return (
            <div className={styles.Auth}>
+               {authRedirect}
               <h2>{this.state.isSignUp ? 'SIGN UP' : 'SIGN IN'}</h2>
               {errorMessage}
               { this.props.loading ? <Spinner/> : 
@@ -155,14 +168,18 @@ class Auth extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAuth: (email, password, isSignUp) => dispatch(actionCreators.auth(email, password, isSignUp))
+        onAuth: (email, password, isSignUp) => dispatch(actionCreators.auth(email, password, isSignUp)),
+        onSetAuthRedirectPath: () => dispatch(actionCreators.setAuthRedirectPath('/'))
     }
 }
 
 const mapStateToProps = state => {
     return {
         loading: state.auth.loading,
-        error: state.auth.error
+        error: state.auth.error,
+        isAuthenticated: state.auth.token !== null,
+        buildingBurger: state.burgerBuilder.building,
+        authRedirectPath: state.auth.authRedirectPath
     }
 }
 
