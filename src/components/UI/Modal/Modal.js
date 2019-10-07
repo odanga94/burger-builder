@@ -10,7 +10,7 @@ import Backdrop from '../Backdrop/Backdrop';
     }
 
     componentWillUpdate(){
-        console.log('[Modal] will update');
+        //console.log('[Modal] will update');
     }
 
     render(){
