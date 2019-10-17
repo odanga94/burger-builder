@@ -43,7 +43,7 @@ class App extends React.Component {
           <Route path="/checkout" component={asyncCheckout} />
           <Route path="/orders" component={asyncOrders} />
           <Route path="/logout" component={Logout}/>
-          <Route path="/auth" component={asyncOrders}/>
+          <Route path="/auth" component={asyncAuth}/>
           <Route exact path="/" component={BurgerBuilder} />
           <Redirect to="/"/>
         </Switch>
